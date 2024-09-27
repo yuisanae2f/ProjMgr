@@ -16,6 +16,24 @@ namespace ProjMgr {
 		for(size_t i = 0; i < MemMap.size() && i < proj.Mem.size(); i++)
 		if(proj.Mem[i]) oss << MemMap[i] << "\n";
 
+		if(proj.Started) {
+			std::string timeString = ctime(&proj.Started);
+			timeString.erase(timeString.length() - 1); 
+			oss << "Beginned at: " << timeString << "\n";
+		} else {
+			oss << "Not yet started.\n";
+			proj.Done = 0;
+			return Err::OK;
+		}
+
+		if(proj.Done) {
+			std::string timeString = ctime(&proj.Done);
+			timeString.erase(timeString.length() - 1);
+			oss << "Is done at: " << timeString << "\n";
+		} else {
+			oss << "Is not done yet.\n";
+		}
+
 		return Err::OK;
 	}
 

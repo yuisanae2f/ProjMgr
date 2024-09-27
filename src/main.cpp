@@ -14,7 +14,6 @@ namespace __main {
 	static int EditProj();
 	static int DelWarn();
 	static int EditProjMembers(ProjMgr::rProject& __el);
-
 	static int EditProjMembers(ProjMgr::rProject& __el) {
 		if(!ProjMgr::gMemMap.size()) {
 			return 0;
@@ -96,10 +95,12 @@ namespace __main {
 		const static std::vector<std::string> a{
 			"- Name\t",
 			"- Member",
+			"- Started",
+			"- Done\t",
 			"- Cancel"
 		};
 
-		switch (ProjMgr::Screen::TryGetKeyboardInput(ProjMgr::ScreenDir, ProjMgr::gProject_Arr.size(), 3)) {
+		switch (ProjMgr::Screen::TryGetKeyboardInput(ProjMgr::ScreenDir, ProjMgr::gProject_Arr.size(), 5)) {
 		case ProjMgr::Err::OK:
 		__lbFIRST:
 			ProjMgr_Programme_consoleClear();
@@ -117,20 +118,36 @@ namespace __main {
 
 			break;
 		default: {
+			ProjMgr_Programme_consoleClear();
 			switch (ProjMgr::ScreenDir.y) {
 			case 0:
 			{
-				ProjMgr_Programme_consoleClear();
 				std::cout << "Gimme the another name: ";
 				std::getline(std::cin, el.Name);
-				
 			} break;
 				
 			case 1:
 			{
 				EditProjMembers(el);
-				
 			} break;
+
+			case 2: // Started
+			{
+				if(el.Started) el.Done = el.Started = 0;
+				else el.Started = std::time(0);
+				first = 1;
+				return 0;
+			}
+			case 3: // Done
+			{
+				if(el.Done) el.Done = 0;
+				else {
+					if(!el.Started) el.Started = std::time(0);
+					el.Done = std::time(0);
+				}
+				first = 1;
+				return 0;
+			}
 			default:;
 			}
 
@@ -288,8 +305,7 @@ static void disableRawMode() {
 }
 #endif
 
-int main() {
-
+int main(int argc, const char** argv) {
 #ifndef _WIN32
     tcgetattr(STDIN_FILENO, &orig_termios);
     struct termios raw = orig_termios;
@@ -298,6 +314,17 @@ int main() {
 
     atexit(disableRawMode);
 #endif
+
+	switch(argc) {
+		case 2: 
+		{
+			std::string path = argv[1];
+			ProjMgr::FileRead(path);
+		}
+		case 1: break;
+		default: return 1;
+	}
+
 	#if 1
 	ProjMgr::Programme = __main::Main;
 	while(ProjMgr::Programme() == ProjMgr::Err::OK) {}
