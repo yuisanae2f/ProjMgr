@@ -40,9 +40,15 @@ namespace ProjMgr {
 		};
 
 		/// @brief 
-		/// @param rs 
+		/// 비정지非停止(비동기非同期) 입력入力 처리處理는 운영運營 체제體制 요청要請할 필요必要가 있다.
+		/// 
+		/// 그것이 비동기非同期 입력入力의 구현具現하는 방법方法이 운영체제運營體制에 따라 달라지는 원인原因이 된다.
+		/// @param rs
+		/// 커서의 현재現在 위치位置를 드러낸다.
 		/// @param w 
+		/// 너비
 		/// @param h 
+		/// 높이
 		/// @return 
 		Err::Type TryGetKeyboardInput(rScreen& rs, uint32_t w, uint32_t h) noexcept;
 	}
