@@ -33,7 +33,7 @@ namespace ProjMgr {
 		/// @param Idx 
 		/// 읽은 내용內容을 담을 수 있는 Collection 형태形態의 주소住所이다.
 		/// @param a 
-		/// 파일의위치 位置를 나타낸다.
+		/// 파일의 위치 位置를 나타낸다.
 		/// 읽을 수 있는 형태形態이다.
 		/// @return 
 		Err::Type Insert(const std::vector<std::string>& Idx, std::fstream& a) noexcept;
